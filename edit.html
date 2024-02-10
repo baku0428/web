@@ -4,18 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Tier</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Edit Tier</h1>
-    <form action="/edit/{{ tier.id }}" method="POST">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" value="{{ tier.name }}"><br>
-        <label for="category">Category:</label><br>
-        <input type="text" id="category" name="category" value="{{ tier.category }}"><br>
-        <label for="tier">Tier:</label><br>
-        <input type="text" id="tier" name="tier" value="{{ tier.tier }}"><br><br>
-        <button type="submit">Update Tier</button>
-    </form>
+    <div class="container">
+        <h1 class="text-center">Edit Tier</h1>
+        <form action="/edit/{{ tier.id }}" method="POST">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" class="form-control" value="{{ tier.name }}">
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <input type="text" id="category" name="category" class="form-control" value="{{ tier.category }}">
+            </div>
+            <div class="form-group">
+                <label for="tier">Tier:</label>
+                <input type="text" id="tier" name="tier" class="form-control" value="{{ tier.tier }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Update Tier</button>
+        </form>
+    </div>
 </body>
 </html>
-
