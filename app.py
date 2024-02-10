@@ -5,6 +5,11 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tierlist.db'
 db = SQLAlchemy(app)
 
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+
 class Tier(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
@@ -18,9 +23,14 @@ def welcome():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # ตรวจสอบการล็อกอิน
-        # ในที่นี้ให้เราสมมติว่าล็อกอินสำเร็จเสมอ
-        return redirect(url_for('home'))
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username, password=password).first()
+        if user:
+            return redirect(url_for('home'))
+        else:
+            error = 'Invalid credentials. Please try again.'
+            return render_template('login.html', error=error)
     return render_template('login.html')
 
 @app.route('/home')
@@ -31,16 +41,17 @@ def home():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        # ทำการสมัครสมาชิก
-        # ในที่นี้เราสมมติว่าการสมัครสมาชิกสำเร็จเสมอ
-        return redirect(url_for('login'))
+        username = request.form['username']
+        password = request.form['password']
+        new_user = User(username=username, password=password)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('welcome'))
     return render_template('signup.html')
 
 @app.route('/checkin')
 def checkin():
-    # ตรวจสอบการเช็คอิน
-    # ในที่นี้เราสมมติว่าผู้ใช้ทำการเช็คอินสำเร็จเสมอ
-    return redirect(url_for('home'))
+    return render_template('checkin.html')
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
