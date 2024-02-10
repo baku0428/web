@@ -20,27 +20,18 @@ def index():
         new_tier = Tier(name=name, category=category, tier=tier)
         db.session.add(new_tier)
         db.session.commit()
-        return redirect(url_for('index'))
-    tiers = Tier.query.all()
-    return render_template('index.html', tiers=tiers)
+        return redirect('/')
+    else:
+        tiers = Tier.query.all()
+        return render_template('index.html', tiers=tiers)
 
-@app.route('/edit/<int:id>', methods=['GET', 'POST'])
-def edit(id):
-    tier = Tier.query.get_or_404(id)
-    if request.method == 'POST':
-        tier.name = request.form['name']
-        tier.category = request.form['category']
-        tier.tier = request.form['tier']
-        db.session.commit()
-        return redirect(url_for('index'))
-    return render_template('edit.html', tier=tier)
-
-@app.route('/delete/<int:id>')
-def delete(id):
-    tier = Tier.query.get_or_404(id)
-    db.session.delete(tier)
+@app.route('/delete/<int:id>', methods=['DELETE'])
+def delete_tier(id):
+    tier_to_delete = Tier.query.get_or_404(id)
+    db.session.delete(tier_to_delete)
     db.session.commit()
-    return redirect(url_for('index'))
+    return 'Tier has been deleted'
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
