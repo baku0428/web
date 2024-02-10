@@ -4,25 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tier List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Tier List</h1>
-    <form action="/" method="POST">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name"><br>
-        <label for="category">Category:</label><br>
-        <input type="text" id="category" name="category"><br>
-        <label for="tier">Tier:</label><br>
-        <input type="text" id="tier" name="tier"><br><br>
-        <button type="submit">Add Tier</button>
-    </form>
-    <ul>
-        {% for tier in tiers %}
-            <li>{{ tier.name }} - {{ tier.category }} - {{ tier.tier }}
-                <a href="/edit/{{ tier.id }}">Edit</a> | 
-                <a href="/delete/{{ tier.id }}">Delete</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="container">
+        <h1 class="text-center">Tier List</h1>
+        <form action="/" method="POST">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="category">Category:</label>
+                <input type="text" id="category" name="category" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="tier">Tier:</label>
+                <input type="text" id="tier" name="tier" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-primary">Add Tier</button>
+        </form>
+        <ul class="list-group mt-3">
+            {% for tier in tiers %}
+                <li class="list-group-item">
+                    {{ tier.name }} - {{ tier.category }} - {{ tier.tier }}
+                    <a href="/edit/{{ tier.id }}" class="btn btn-sm btn-info ml-2">Edit</a>
+                    <a href="/delete/{{ tier.id }}" class="btn btn-sm btn-danger ml-2">Delete</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
