@@ -25,15 +25,29 @@
             </div>
             <button type="submit" class="btn btn-primary">Add Tier</button>
         </form>
-        <ul class="list-group mt-3">
-            {% for tier in tiers %}
-                <li class="list-group-item">
-                    {{ tier.name }} - {{ tier.category }} - {{ tier.tier }}
-                    <a href="/edit/{{ tier.id }}" class="btn btn-sm btn-info ml-2">Edit</a>
-                    <a href="/delete/{{ tier.id }}" class="btn btn-sm btn-danger ml-2">Delete</a>
-                </li>
-            {% endfor %}
-        </ul>
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Tier</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tier in tiers %}
+                    <tr>
+                        <td>{{ tier.name }}</td>
+                        <td>{{ tier.category }}</td>
+                        <td>{{ tier.tier }}</td>
+                        <td>
+                            <a href="/edit/{{ tier.id }}" class="btn btn-sm btn-info">Edit</a>
+                            <a href="/delete/{{ tier.id }}" class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
