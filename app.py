@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tierlist.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tiers.db'
 db = SQLAlchemy(app)
 
 class Tier(db.Model):
@@ -21,16 +21,26 @@ def index():
         db.session.add(new_tier)
         db.session.commit()
         return redirect('/')
-    else:
-        tiers = Tier.query.all()
-        return render_template('index.html', tiers=tiers)
+    tiers = Tier.query.all()
+    return render_template('index.html', tiers=tiers)
 
-@app.route('/delete/<int:id>', methods=['DELETE'])
-def delete_tier(id):
+@app.route('/delete/<int:id>', methods=['POST'])
+def delete(id):
     tier_to_delete = Tier.query.get_or_404(id)
     db.session.delete(tier_to_delete)
     db.session.commit()
-    return 'Tier has been deleted'
+    return redirect('/')
+
+@app.route('/edit/<int:id>', methods=['GET', 'POST'])
+def edit(id):
+    tier = Tier.query.get_or_404(id)
+    if request.method == 'POST':
+        tier.name = request.form['name']
+        tier.category = request.form['category']
+        tier.tier = request.form['tier']
+        db.session.commit()
+        return redirect('/')
+    return render_template('edit.html', tier=tier)
 
 if __name__ == '__main__':
     with app.app_context():
