@@ -2,11 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
+    <title>Tier List</title>
 </head>
 <body>
-    <h1>Welcome to My Website!</h1>
+    <h1>Tier List</h1>
+    <form action="/" method="POST">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="category">Category:</label><br>
+        <input type="text" id="category" name="category"><br>
+        <label for="tier">Tier:</label><br>
+        <input type="text" id="tier" name="tier"><br><br>
+        <button type="submit">Add Tier</button>
+    </form>
+    <ul>
+        {% for tier in tiers %}
+            <li>{{ tier.name }} - {{ tier.category }} - {{ tier.tier }}
+                <a href="/edit/{{ tier.id }}">Edit</a> | 
+                <a href="/delete/{{ tier.id }}">Delete</a>
+            </li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
