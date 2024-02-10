@@ -11,8 +11,13 @@ class Tier(db.Model):
     category = db.Column(db.String(100), nullable=False)
     tier = db.Column(db.String(100), nullable=False)
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
+@app.route('/')
+def home():
+    tiers = Tier.query.all()
+    return render_template('home.html', tiers=tiers)
+
+@app.route('/add', methods=['GET', 'POST'])
+def add():
     if request.method == 'POST':
         name = request.form['name']
         category = request.form['category']
@@ -21,8 +26,7 @@ def index():
         db.session.add(new_tier)
         db.session.commit()
         return redirect('/')
-    tiers = Tier.query.all()
-    return render_template('index.html', tiers=tiers)
+    return render_template('add.html')
 
 @app.route('/delete/<int:id>', methods=['POST'])
 def delete(id):
@@ -43,6 +47,4 @@ def edit(id):
     return render_template('edit.html', tier=tier)
 
 if __name__ == '__main__':
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
