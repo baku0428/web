@@ -1,8 +1,8 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tiers.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tierlist.db'
 db = SQLAlchemy(app)
 
 class Tier(db.Model):
@@ -15,10 +15,32 @@ class Tier(db.Model):
 def welcome():
     return render_template('welcome.html')
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        # ตรวจสอบการล็อกอิน
+        # ในที่นี้ให้เราสมมติว่าล็อกอินสำเร็จเสมอ
+        return redirect(url_for('home'))
+    return render_template('login.html')
+
 @app.route('/home')
 def home():
     tiers = Tier.query.all()
     return render_template('home.html', tiers=tiers)
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    if request.method == 'POST':
+        # ทำการสมัครสมาชิก
+        # ในที่นี้เราสมมติว่าการสมัครสมาชิกสำเร็จเสมอ
+        return redirect(url_for('login'))
+    return render_template('signup.html')
+
+@app.route('/checkin')
+def checkin():
+    # ตรวจสอบการเช็คอิน
+    # ในที่นี้เราสมมติว่าผู้ใช้ทำการเช็คอินสำเร็จเสมอ
+    return redirect(url_for('home'))
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
