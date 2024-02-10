@@ -3,62 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tier List</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Home</title>
 </head>
 <body>
-    <div class="container">
-        <h1 class="text-center">Tier List</h1>
-        <a href="/add" class="btn btn-primary mb-3">Add Tier</a>
-        <table id="sortable" class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Category</th>
-                    <th>Tier</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for tier in tiers %}
-                    <tr>
-                        <td>{{ tier.name }}</td>
-                        <td>{{ tier.category }}</td>
-                        <td>{{ tier.tier }}</td>
-                        <td>
-                            <a href="/edit/{{ tier.id }}" class="btn btn-sm btn-info">Edit</a>
-                            <form action="/delete/{{ tier.id }}" method="POST" style="display: inline;">
-                                <button type="submit" class="btn btn-sm btn-danger delete-btn">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
-    <script>
-        $( function() {
-            $( "#sortable tbody" ).sortable();
-            $( "#sortable tbody" ).disableSelection();
-        } );
-
-        // Disable sorting on thead
-        $('#sortable thead').on('mousedown', function(event) {
-            event.preventDefault();
-        });
-
-        // Confirm delete action
-        $('.delete-btn').on('click', function(event) {
-            if (!confirm('Are you sure you want to delete this tier?')) {
-                event.preventDefault();
-            }
-        });
-    </script>
+    <h1>Welcome, {{ username }}</h1>
+    <p>Your tier list:</p>
+    <!-- Your tier list display goes here -->
+    <a href="/logout">Logout</a>  <!-- Logout link/button -->
 </body>
 </html>
-
