@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tier List</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -25,7 +26,7 @@
             </div>
             <button type="submit" class="btn btn-primary">Add Tier</button>
         </form>
-        <table class="table mt-3">
+        <table id="sortable" class="table mt-3">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -49,5 +50,19 @@
             </tbody>
         </table>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script>
+        $( function() {
+            $( "#sortable tbody" ).sortable();
+            $( "#sortable tbody" ).disableSelection();
+        } );
+
+        // Disable sorting on thead
+        $('#sortable thead').on('mousedown', function(event) {
+            event.preventDefault();
+        });
+    </script>
 </body>
 </html>
