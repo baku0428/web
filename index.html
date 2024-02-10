@@ -37,13 +37,15 @@
             </thead>
             <tbody>
                 {% for tier in tiers %}
-                    <tr id="{{ tier.id }}">
+                    <tr>
                         <td>{{ tier.name }}</td>
                         <td>{{ tier.category }}</td>
                         <td>{{ tier.tier }}</td>
                         <td>
                             <a href="/edit/{{ tier.id }}" class="btn btn-sm btn-info">Edit</a>
-                            <a href="#" class="btn btn-sm btn-danger delete-tier" data-id="{{ tier.id }}">Delete</a>
+                            <form action="/delete/{{ tier.id }}" method="POST" style="display: inline;">
+                                <button type="submit" class="btn btn-sm btn-danger delete-btn">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 {% endfor %}
@@ -64,18 +66,10 @@
             event.preventDefault();
         });
 
-        // Delete tier
-        $(document).on('click', '.delete-tier', function(e){
-            e.preventDefault();
-            var tierId = $(this).data('id');
-            if (confirm('Are you sure you want to delete this tier?')) {
-                $.ajax({
-                    url: '/delete/' + tierId,
-                    type: 'DELETE',
-                    success: function(result) {
-                        $('#' + tierId).remove();
-                    }
-                });
+        // Confirm delete action
+        $('.delete-btn').on('click', function(event) {
+            if (!confirm('Are you sure you want to delete this tier?')) {
+                event.preventDefault();
             }
         });
     </script>
