@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -12,6 +12,10 @@ class Tier(db.Model):
     tier = db.Column(db.String(100), nullable=False)
 
 @app.route('/')
+def welcome():
+    return render_template('welcome.html')
+
+@app.route('/home')
 def home():
     tiers = Tier.query.all()
     return render_template('home.html', tiers=tiers)
@@ -25,7 +29,7 @@ def add():
         new_tier = Tier(name=name, category=category, tier=tier)
         db.session.add(new_tier)
         db.session.commit()
-        return redirect('/')
+        return redirect('/home')
     return render_template('add.html')
 
 @app.route('/delete/<int:id>', methods=['POST'])
@@ -33,7 +37,7 @@ def delete(id):
     tier_to_delete = Tier.query.get_or_404(id)
     db.session.delete(tier_to_delete)
     db.session.commit()
-    return redirect('/')
+    return redirect('/home')
 
 @app.route('/edit/<int:id>', methods=['GET', 'POST'])
 def edit(id):
@@ -43,7 +47,7 @@ def edit(id):
         tier.category = request.form['category']
         tier.tier = request.form['tier']
         db.session.commit()
-        return redirect('/')
+        return redirect('/home')
     return render_template('edit.html', tier=tier)
 
 if __name__ == '__main__':
