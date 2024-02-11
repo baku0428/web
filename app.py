@@ -27,7 +27,7 @@ def login():
         password = request.form['password']
         user = User.query.filter_by(username=username, password=password).first()
         if user:
-            return redirect(url_for('home'))
+            return redirect(url_for('terms'))
         else:
             error = 'Invalid credentials. Please try again.'
             return render_template('login.html', error=error)
@@ -38,20 +38,30 @@ def home():
     tiers = Tier.query.all()
     return render_template('home.html', tiers=tiers)
 
+@app.route('/back_to_welcome')
+def back_to_welcome():
+    return redirect(url_for('welcome'))
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
-        new_user = User(username=username, password=password)
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('welcome'))
+        existing_user = User.query.filter_by(username=username).first()
+        if existing_user:
+            error = 'Username already exists. Please choose another one.'
+            return render_template('signup.html', error=error)
+        else:
+            new_user = User(username=username, password=password)
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('login'))
     return render_template('signup.html')
 
-@app.route('/checkin')
-def checkin():
-    return render_template('checkin.html')
+
+@app.route('/skip')
+def skip():
+    return render_template('skip.html')
 
 @app.route('/add', methods=['GET', 'POST'])
 def add():
@@ -82,6 +92,10 @@ def edit(id):
         db.session.commit()
         return redirect('/home')
     return render_template('edit.html', tier=tier)
+
+@app.route('/terms')
+def terms():
+    return render_template('terms.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
