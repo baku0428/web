@@ -93,6 +93,10 @@ def edit(id):
         return redirect('/home')
     return render_template('edit.html', tier=tier)
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/terms')
 def terms():
     return render_template('terms.html')
