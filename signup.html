@@ -9,6 +9,9 @@
 <body>
     <div class="container">
         <h1 class="text-center">Sign Up</h1>
+        {% if error %}
+            <p class="text-danger">{{ error }}</p>
+        {% endif %}
         <form action="/signup" method="POST">
             <div class="form-group">
                 <label for="username">Username:</label>
@@ -19,8 +22,8 @@
                 <input type="password" id="password" name="password" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-primary">Sign Up</button>
+            <p class="text-center"><a href="{{ url_for('welcome') }}" class="btn btn-primary">Back to Welcome</a></p>
         </form>
     </div>
 </body>
 </html>
-
